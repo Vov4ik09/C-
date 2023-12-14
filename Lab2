@@ -1,0 +1,59 @@
+#include <stdlib.h>
+#include <iostream>
+
+struct TwoInts
+{
+    int a;
+    int b;
+};
+
+struct StructWithArray
+{
+    int arr[4];
+    int* someNumber;
+};
+
+int main()
+{
+    TwoInts i2 = { }; // Инициализирует переменную типа TwoInts 
+    i2.a = 5; // Устанавливает член 'a' структуры TwoInts равным 5
+    i2.b = 7; // Устанавливает член 'b' структуры TwoInts равным 7
+
+    std::cout << i2.a << std::endl; // Выводит значение 'a' (5)
+    std::cout << i2.b << std::endl; // Выводит значение 'b' (7)
+    
+    StructWithArray s = { }; // Инициализирует переменную типа StructWithArray 
+    s.arr[0] = 10; // Устанавливает первый элемент массива 'arr' 
+
+    StructWithArray s1 = { }; // Инициализирует другую переменную типа StructWithArray с значениями по умолчанию
+    s1.arr[0] = 15; // Устанавливает первый элемент массива 'arr' значени 15 
+
+    StructWithArray* sPointer = &s; // Инициализирует указатель на структуру типа StructWithArray 
+    sPointer->arr[0] = 20; // Изменяет первый элемент массива 'arr' 
+
+    std::cout << s.arr[0] << std::endl; // Выводит первый элемент массива 'arr' 
+    s.arr[0] = 25; // Снова меняет значение первого элемента массива 'arr' на 25
+    std::cout << s.arr[0] << std::endl; // Выводит новое значение первого элемента массива 'arr' 25
+    sPointer->arr[0] = 30; // Снова изменяет значение первого элемента массива 'arr' + указатель 
+
+    std::cout << s.arr[0] << std::endl; // Выводит текущее значение первого элемента массива 'arr' 30
+
+    sPointer = &s1; // Изменяет указатель так, чтобы он указывал на переменную 's1' 
+    sPointer->arr[0] = 35; // Изменяет первый элемент массива 'arr' структуры s1 + указатель 
+    std::cout << s.arr[0] << std::endl; // Выводит текущее значение первого элемента массива 'arr' структуры s 
+    std::cout << s1.arr[0] << std::endl; // Выводит значение первого элемента массива 'arr' структуры s1 35
+
+    StructWithArray structArray[2] = { }; // Инициализирует массив из двух элементов типа StructWithArray 
+    structArray[0].arr[3] = 77; // Устанавливает четвертый элемент массива 'arr' 77
+    structArray[1].someNumber = &structArray[0].arr[3]; // Устанавливает указатель 'someNumber'  первой структуры в массиве
+
+    sPointer = &s; // Возвращает указатель к переменной 's' типа StructWithArray
+    int* pointer = &sPointer->arr[3]; // Инициализирует указатель на четвертый элемент массива 'arr' структуры s 
+    s.arr[3] = 72; // Устанавливает четвертый элемент массива 'arr' 72
+    std::cout << *pointer; // Выводит значение, на которое указывает указатель 72
+
+    StructWithArray memory; // Инициализирует переменную типа StructWithArray без установки значений членов
+    memset(&memory, 0, sizeof(StructWithArray)); // Использует функцию 'memset' для установки всех байтов памяти, связанных с переменной 'memory', в 0
+
+    return 0; 
+}

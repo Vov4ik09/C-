@@ -1,0 +1,71 @@
+#include <iostream>  //Включение библиотеки для стандартного ввода/вывода
+#include <array>     //Включение библиотеки для работы с массивами
+#include <string>    //Включение библиотеки для работы со строками
+#include <ostream>   //Включение библиотеки для потоков вывода
+#include <istream>   //Включение библиотеки для потоков ввода
+#include <fstream>   //Включение библиотеки для работы с файлами
+
+enum class Gender {  //Определение пола
+    Male,
+    Female
+};
+
+struct Person {  //Определение структуры для человека
+    std::array<char, 50> name;  //Имя человека как массив 
+    int age;                     //Возраст человека как число
+    Gender gender;               //Пол человека
+};
+
+//Функции сериализации для различных типов данных
+//Они преобразуют различные типы данных в строки для записи в файл
+//Имя, возраст и пол человека в определенном формате
+void serializeString(const std::array<char, 50>& str, std::ostream& os);
+void serializeInt(int value, std::ostream& os);
+void serializeEnum(Gender gender, std::ostream& os);
+void serializePerson(const Person& person, std::ostream& os);
+
+//Функции десериализации для различных типов данных
+//они считывают строки из файла и преобразуют их обратно в их исходные типы
+bool deserializeString(std::array<char, 50>& str, std::istream& is);
+bool deserializeInt(int& value, std::istream& is);
+bool deserializeEnum(Gender& gender, std::istream& is);
+bool deserializePerson(Person& person, std::istream& is);
+
+/ Функции для сериализации и десериализации объектов Person в/из файла
+bool serializePersonObject(const Person& person, std::ostream& os);
+bool deserializePersonObject(Person& person, std::istream& is);
+
+int main() {  
+
+    //Определение объектов типа Person с разной информацией
+    Person person1 = { { 'V', 'o', 'v','a' ,'\0' }, 18, Gender::Male };
+    Person person2 = { { 'P', 'e', 't', 'r', 'u','\0' }, 32, Gender::Female };
+    //определение других объектов Person
+
+    
+    std::ofstream outFile("persons.csv");
+    if (outFile.is_open()) {  //открытие успешного файла
+        
+        serializePersonObject(person1, outFile);
+        serializePersonObject(person2, outFile);
+        outFile.close();  
+    }
+
+    //Чтение файла 
+    std::ifstream inFile("persons.csv");
+    if (inFile.is_open()) {  
+        //Объявление переменных 
+        Person deserializedPerson1, deserializedPerson2;
+        // Десериализация объектов Person и вывод инфо 
+        if (deserializePersonObject(deserializedPerson1, inFile)) {
+            //вывод информации о Person1
+        }
+        if (deserializePersonObject(deserializedPerson2, inFile)) {
+            //вывод информации о Person2
+        }
+        //десериализация и вывод других объектов Person
+        inFile.close(); 
+    }
+
+    return 0;  
+}
